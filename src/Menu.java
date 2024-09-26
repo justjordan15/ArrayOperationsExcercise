@@ -3,76 +3,110 @@ import java.util.Scanner;
 
 public class Menu extends IntArrayOps {
 
-    public void runMenu() {
-        Scanner scnr = new Scanner(System.in);
-        int choice = -1;
+    //Method ro run the interactive menue
+    public void runMenu(){
+        Scanner scnr = new Scanner(System.in); //Create a scanner to read user input
+        int choice = -1; //Initialize menu choice variable
 
-        while (choice != 0) {
-            try {
-                System.out.println("\nMenu:");
-                System.out.println("1. Create Array");
-                System.out.println("2. Display Array");
-                System.out.println("3. Save Array to File");
-                System.out.println("4. Find Value in Array");
-                System.out.println("5. Delete Array");
-                System.out.println("0. Exit");
-                System.out.print("Enter your choice: ");
+        //Loop to keep dispaying the menu until the user chooses to exit (choice = 0)
+        while(choice != 0){
+            try{
+                System.out.println("\nChoose an option:");
+                System.out.println("1) Create array");
+                System.out.println("2) Display");
+                System.out.println("3) Save array");
+                System.out.println("4) Find a value");
+                System.out.println("5) Delete array");
+                System.out.println("0) Exit");
+
+                //Get user input for menu choice
                 choice = scnr.nextInt();
+
+                //Handle user's choice with a switch statement
                 switch (choice) {
                     case 0:
                         System.out.println("Exiting program.");
                         break;
+                    //FIXME: Allow user to enter two numbers on one line
                     case 1:
-                        try {
+                        try{
+                            //Prompt user to enter the number of values
                             System.out.print("Enter number of values: ");
-                            this.numberOfValues = scnr.nextInt();
-                            System.out.print("Enter min value: ");
-                            this.minRange = scnr.nextInt();
-                            System.out.print("Enter max value: ");
-                            this.maxRange = scnr.nextInt();
-                            if (this.numberOfValues > 0 && this.minRange < this.maxRange) {
-                                this.createArray(this.numberOfValues, this.minRange, this.maxRange);
-                                continue;
+                            this.numberOfValues = scnr.nextInt(); //Get number of values
+                            scnr.nextLine(); //Clear the newline character after nextInt()
+
+                            //Prompt user to enter both min and max values in a single line
+                            System.out.print("Enter range of values (lower upper): ");
+                            String rangeInput = scnr.nextLine(); //Get the entire line of input
+
+                            //Split the input string into two parts (min and max values)
+                            String[] rangeParts = rangeInput.split(" ");
+
+                            //Ensure the user has entered exactly two values
+                            if(rangeParts.length != 2){
+                                throw new IllegalArgumentException("Please enter exactly two integer values.");
                             }
 
-                            throw new IllegalArgumentException("Invalid input for array creation. Min value should be less than max value.");
-                        } catch (InputMismatchException var6) {
-                            System.out.println("Invalid input for array creation. Please enter valid numbers.");
-                            scnr.nextLine();
-                        } catch (IllegalArgumentException var7) {
-                            IllegalArgumentException e = var7;
+                            //Parse both parts as integers
+                            this.minRange = Integer.parseInt(rangeParts[0]); //Parse min
+                            this.maxRange = Integer.parseInt(rangeParts[1]); //Parse max value
+
+                            //Validate input and createate array if valid
+                            if(this.numberOfValues > 0 && this.minRange < this.maxRange){
+                                this.createArray(this.numberOfValues, this.minRange, this.maxRange);
+                                continue; //Return to the main menu after array creation
+                            }
+
+                            //If the input validation fails, throw an exception
+                            throw new IllegalArgumentException("Invalid input: Min value should be less than max value");
+
+                        }catch(InputMismatchException e){
+                            //Handle invalid input for number of values
+                            System.out.println("Invalid input for number of values. Please enter a valid integer.");
+                            scnr.nextLine(); //Clear the input buffer
+                        }catch(NumberFormatException e){
+                            //Handle invalid input if min or max values are not integers
+                            System.out.println("Invalid input format. Please enter two valid integers.");
+                        }catch(IllegalArgumentException e){
+                            //Handle validation errors or incorrect number of values entered
                             System.out.println(e.getMessage());
                         }
                         break;
                     case 2:
+                        //Display the array
                         this.displayArray();
                         break;
                     case 3:
+                        //Save the array to a file
                         System.out.print("Enter file name to save array: ");
                         String fileName = scnr.next();
                         this.saveArrayToFile(fileName);
                         break;
                     case 4:
-                        try {
-                            System.out.print("Enter value to find in the array: ");
-                            int valueToFind = scnr.nextInt();
-                            this.findValue(valueToFind);
-                        } catch (InputMismatchException var5) {
+                        //Find a value in the array
+                        try{
+                            System.out.print("Enter file name to find in array: ");
+                            int valueToFind = scnr.nextInt(); //Get value to search for
+                            this.findValue(valueToFind); //Call method to find value
+                        }catch(InputMismatchException e){
+                            //Handle invalid input for value search
                             System.out.println("Invalid input. Please enter a valid value to search.");
-                            scnr.nextLine();
+                            scnr.nextLine(); //Clear input buffer
                         }
                         break;
                     case 5:
+                        //Delete the current array
                         this.deleteArray();
                         break;
                     default:
+                        //Handle invalid menu choice
                         System.out.println("Invalid option. Please choose again.");
                 }
-            } catch (InputMismatchException var8) {
-                System.out.println("Invalid menu choice. Please enter 1-5 or 0 to exit.");
-                scnr.nextLine();
+            }catch (InputMismatchException e){
+                //Handle invalid menu choice input
+                System.out.println("Invalid menu choic. Please enter 1-5 or 0 to exit.");
+                scnr.nextLine(); //Clear input buffer
             }
         }
-
     }
 }
