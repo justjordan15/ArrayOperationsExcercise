@@ -16,7 +16,10 @@ public class Menu extends IntArrayOps {
                 System.out.println("2) Display");
                 System.out.println("3) Save array");
                 System.out.println("4) Find a value");
-                System.out.println("5) Delete array");
+                System.out.println("5) Sort array using Merge Sort");
+                System.out.println("6) Sort array using Shell Sort");
+                System.out.println("7) Compare execution time of algorithms Merge Sort and Shell Sort");
+                System.out.println("8) Delete array");
                 System.out.println("0) Exit");
 
                 //Get user input for menu choice
@@ -27,7 +30,6 @@ public class Menu extends IntArrayOps {
                     case 0:
                         System.out.println("Exiting program.");
                         break;
-                    //FIXME: Allow user to enter two numbers on one line
                     case 1:
                         try{
                             //Prompt user to enter the number of values
@@ -95,6 +97,39 @@ public class Menu extends IntArrayOps {
                         }
                         break;
                     case 5:
+                        // Sort the array using Merge Sort
+                        try{
+                            if(this.values == null){
+                                throw new IllegalStateException("Array is empty. Create and array first.");
+                            }
+                            this.mergeSort();
+                        } catch (IllegalStateException e){
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case 6:
+                        // Sort the array using Shell Sort
+                        try{
+                            if(this.values == null){
+                                throw new IllegalStateException("Array is empty. Create an array first.");
+                            }
+                            this.shellSort();
+                        } catch (IllegalStateException e){
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case 7:
+                        // Compare execution time of Merge Sort and Shell Sort
+                        try{
+                            if(this.values == null){
+                                throw new IllegalStateException("Array is empty. Create an array first.");
+                            }
+                            this.compareSortTimes();
+                        } catch (IllegalStateException e){
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case 8:
                         //Delete the current array
                         this.deleteArray();
                         break;

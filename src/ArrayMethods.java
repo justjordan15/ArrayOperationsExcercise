@@ -55,4 +55,34 @@ public interface ArrayMethods<T> {
      *until a new one is created.
      */
     abstract void deleteArray();
+
+
+    /**
+     * Sorts the array using merge sort algorithm.
+     *
+     * This method should sort the array elements in ascending order
+     * using the merge sort technique.
+     * If the array is empty or uninitialized, an appropriate message should be displayed.
+     */
+    abstract void mergeSort();
+
+
+    /**
+     * Sorts the array using the shell sort algorithm.
+     *
+     * This method should sort the array elements in ascending order
+     * using the shell sort technique.
+     * If the array is empty or uninitialized, an appropriate message should be displayed.
+     */
+    abstract void shellSort();
+
+
+    /**
+     * Compares the execution times of mergeSort and shellSort.
+     *
+     * This method should measure the execution time of both sorting algorithms
+     * on the same dataset and output a comparison.
+     *
+     */
+    abstract void compareSortTimes();
 }

@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Random;
+import java.util.Arrays;
 
 
 public abstract class IntArrayOps implements ArrayMethods<Integer>{
@@ -132,4 +133,119 @@ public abstract class IntArrayOps implements ArrayMethods<Integer>{
         System.out.println("Array deleted.");
     }
 
+    @Override
+    public void mergeSort(){
+        // Check if array exist
+        if (this.values != null){
+            // Call recursive mergeSort on the entire array
+            this.values = mergeSortRecursive(this.values);
+            System.out.println("Array sorted using Merge Sort.");
+        } else {
+            System.out.println("Array is empty. Cannot sort.");
+        }
+    }
+   private Integer[] mergeSortRecursive(Integer[] array){
+        // Base case: arrays with one element are already sorted
+       if (array.length <= 1){
+           return array;
+       }
+
+       // Split the array into two halves
+       int mid = array.length / 2;
+       Integer[] left = Arrays.copyOfRange(array, 0, mid);
+       Integer [] right = Arrays.copyOfRange(array, mid, array.length);
+
+       // Recursively sort each half and merge the results
+       return merge(mergeSortRecursive(left), mergeSortRecursive(right));
+   }
+   private Integer[] merge(Integer[] left, Integer[] right) {
+       Integer[] result = new Integer[left.length + right.length];
+       int i = 0, j = 0, k = 0;
+
+       // Merger the two arrays
+       while(i < left.length && j < right.length){
+           if(left[i] <= right[j]) {
+               result[k++] = left[i++];
+           } else {
+               result[k++] = right[j++];
+           }
+       }
+
+       // Copy any remaining elements from the left array
+       while(i < left.length){
+           result[k++] = left[i++];
+       }
+
+       // Copy any remaining elements from the right array
+       while(j < right.length){
+           result[k++] = right[j++];
+       }
+
+       return result;
+   }
+
+   @Override
+    public void shellSort() {
+       // Check if the array exists
+       if (this.values != null) {
+           int n = this.values.length;
+
+           // Start with a large gap, then reduce the gap
+           for (int gap = n / 2; gap > 0; gap /= 2) {
+               for (int i = gap; i < n; i++) {
+                   int temp = this.values[i];
+                   int j;
+
+                   // Perform a gapped insertion sort
+                   for (j = i; j >= gap && this.values[j - gap] > temp;
+                   j -= gap){
+                       this.values[j] = this.values[j - gap];
+                   }
+
+                   // Put temp in its correct position
+                   this.values[j] = temp;
+               }
+           }
+           System.out.println("Array sored using Shell sort.");
+       } else {
+           System.out.println("Array is empty. Cannot sort.");
+       }
+   }
+
+   @Override
+    public void compareSortTimes(){
+        if(this.values == null){
+            System.out.println("Array is empty. Cannot compare sort times.");
+            return;
+        }
+
+        // Clone the array for fair comparison
+       Integer[] arrayForMergeSort = Arrays.copyOf(this.values, this.values.length);
+        Integer[] arrayForShellSort = Arrays.copyOf(this.values, this.values.length);
+
+        // Measure Merge Sort time
+       long startTime = System.nanoTime();
+       arrayForMergeSort = mergeSortRecursive(arrayForMergeSort);
+       long mergeSortTime = System.nanoTime() - startTime;
+
+       // Measure Shell Sort time
+       startTime = System.nanoTime();
+       int n = arrayForShellSort.length;
+       for(int gap = n / 2; gap > 0; gap /= 2){
+           for(int i = gap; i < n; i++){
+               int temp = arrayForShellSort[i];
+               int j;
+               for (j = i; j >= gap && arrayForShellSort[j - gap] > temp; j -= gap){
+                   arrayForShellSort[j] = arrayForShellSort[j - gap];
+               }
+               arrayForShellSort[j] = temp;
+           }
+       }
+       long shellSortTime = System.nanoTime() - startTime;
+
+
+       // Print Results
+       System.out.println("Merge Sort time: " + mergeSortTime + " ns");
+       System.out.println("Shell Sort time: " + shellSortTime + " ns");
+   }
 }
