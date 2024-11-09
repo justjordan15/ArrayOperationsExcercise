@@ -206,7 +206,7 @@ public abstract class IntArrayOps implements ArrayMethods<Integer>{
                    this.values[j] = temp;
                }
            }
-           System.out.println("Array sored using Shell sort.");
+           System.out.println("Array sorted using Shell sort.");
        } else {
            System.out.println("Array is empty. Cannot sort.");
        }
